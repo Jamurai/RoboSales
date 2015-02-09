@@ -1,0 +1,14 @@
+<section data-ng-controller="ContactsController" data-ng-init="findOne()">
+  <span>{{contact.created | date:'medium'}}</span> /
+  <span>{{contact.user.name}}</span>
+  <h2>{{contact.title}}</h2>
+  <div data-ng-if="hasAuthorization(contact)">
+    <a class="btn" href="/#!/contacts/{{contact._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn" data-ng-click="remove(contact);">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
+  <div>{{contact.content}}</div>
+</section>

@@ -1,0 +1,14 @@
+<section data-ng-controller="ContactsController" >
+
+  <div class="row">
+    <div class="col-md-3">
+      <button class="btn btn-primary" ng-file-select ng-model="files" ng-multiple="multiple">Select File</button>
+    </div>
+    <div class="col-md-9">
+      <div ng-repeat="file in files"> {{file.name}}</div>
+    </div>
+    <div class="col-md-12">
+    </div>
+
+  <!-- <h1 data-ng-hide="!contacts || contacts.length">No contacts yet. <br> Why don't you <a href="/#!/contacts/create">Create One</a>?</h1>-->
+</section>
