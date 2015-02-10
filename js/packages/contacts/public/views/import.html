@@ -8,13 +8,13 @@
       <div ng-repeat="file in files"> {{file.name}} {{status}}</div>
     </div>
   </div>
-  <div class="box">
+  <div ng-hide="!contactsdata.length" class="box">
     <div class="row">
-      <div data-ng-hide="!contactsdata || contactsdata.length==0" class="col-md-12">
+      <div  class="col-md-12">
 
         <div class="table-responsive ">
          <table class="table table-striped">
-            <caption></caption>
+            <caption>Current Prospects Data</caption>
             <thead>
                <tr>
                   <th>FirstName</th>

@@ -4,7 +4,7 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$up
   function($scope, $upload, $stateParams, $location,Global, Contacts) {
     $scope.global = Global;
 
-    $scope.contactsdata={};
+    $scope.contactsdata=[];
     $scope.status = '';
     $scope.hasAuthorization = function(contact) {
       if (!contact || !contact.user) return false;
