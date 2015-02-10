@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
   fs = require('fs'),
   Parse = require('csv-parse');
 
+
 /**
  * Find contact by id
  */
@@ -43,19 +44,19 @@ var parseCSVFile = function(sourceFilePath, columns, onNewRecord, handleError, d
     var source = fs.createReadStream(sourceFilePath);
 
     var linesRead = 0;
+    var result = {};
 
     var parser = Parse({
         delimiter: ',',
         columns:columns
     });
-    var successrecords = [];
-    var failedrecords = [];
+
 
     parser.on("readable", function(){
       var record;
         while (record = parser.read()) {
             linesRead++;
-            onNewRecord(record,successrecords,failedrecords);
+            onNewRecord(record);
         }
     });
 
@@ -64,8 +65,11 @@ var parseCSVFile = function(sourceFilePath, columns, onNewRecord, handleError, d
     });
 
     parser.on("end", function(){
-        done(linesRead,successrecords,failedrecords);
+
+        done(linesRead);
     });
+
+
 
     source.pipe(parser);
 }
@@ -78,7 +82,9 @@ exports.upload = function(req, res,next) {
   var filePath = req.files.file.path;
 
     console.log(filePath);
-    function onNewRecord(record,successrecords,failedrecords){
+
+
+    function onNewRecord(record){
 
         var contact = new Contact(record);
         contact.user = req.user;
@@ -86,11 +92,13 @@ exports.upload = function(req, res,next) {
         contact.save(function(err) {
           if (err) {
             //TODO
-            failedrecords.push(record);
-            console.log(failedrecords);
-            console.log(err);
+
+
+
+
           } else {
-            successrecords.push(record);
+
+
           }
 
 
@@ -105,13 +113,20 @@ exports.upload = function(req, res,next) {
         });
     }
 
-    function done(linesRead,successrecords,failedrecords){
-        console.log(linesRead,successrecords,failedrecords);
-        return res.status(200).json({
-          'successrecords':successrecords,
-          'failedrecords':failedrecords
+    function done(linesRead){
+        Contact.find().sort('-created').exec(function(err, contacts) {
+          if (err) {
+            return res.status(500).json({
+              error: 'Cannot list the contacts'
+            });
+          }
+          res.json(contacts);
+
         });
+
     }
+
+
 
     var columns = true;
     parseCSVFile(filePath, columns, onNewRecord, onError, done);

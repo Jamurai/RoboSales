@@ -28,12 +28,12 @@ var ContactSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  firstname: {
+  first_name: {
     type: String,
     required: true,
     trim: true
   },
-  lastname: {
+  last_name: {
     type: String,
     required: true,
     trim: true
@@ -56,10 +56,10 @@ var ContactSchema = new Schema({
 /**
  * Validations
  */
-ContactSchema.path('firstname').validate(function(firstname) {
+ContactSchema.path('first_name').validate(function(firstname) {
   return !!firstname;
 }, 'First Name cannot be blank');
-ContactSchema.path('lastname').validate(function(lastname) {
+ContactSchema.path('last_name').validate(function(lastname) {
   return !!lastname;
 }, 'Last Name cannot be blank');
 
@@ -71,7 +71,7 @@ ContactSchema.path('lastname').validate(function(lastname) {
 ContactSchema.statics.load = function(id, cb) {
   this.findOne({
     _id: id
-  }).populate('user', 'firstname lastname').exec(cb);
+  }).populate('user', 'first_name last_name').exec(cb);
 };
 
 mongoose.model('Contact', ContactSchema);

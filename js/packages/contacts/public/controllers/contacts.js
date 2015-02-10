@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('mean.contacts').controller('ContactsController', ['$scope', '$upload','$stateParams', '$location', 'Global', 'contacts',
-  function($scope, $upload, $stateParams, $location,Global, contacts) {
+angular.module('mean.contacts').controller('ContactsController', ['$scope', '$upload','$stateParams', '$location', 'Global', 'Contacts',
+  function($scope, $upload, $stateParams, $location,Global, Contacts) {
     $scope.global = Global;
 
-    $scope.contactsdata='';
-
+    $scope.contactsdata={};
+    $scope.status = '';
     $scope.hasAuthorization = function(contact) {
       if (!contact || !contact.user) return false;
       return $scope.global.isAdmin || contact.user._id === $scope.global.user._id;
@@ -39,8 +39,13 @@ angular.module('mean.contacts').controller('ContactsController', ['$scope', '$up
                 }).success(function (data, status, headers, config) {
                     console.log('file ' + config.file.name + 'uploaded. Response: ' +
                                 JSON.stringify(data));
+                    $scope.contactsdata = data;
+                    $scope.status=' uploaded successfully';
+
+
                 }).error(function (data, status, headers, config){
                   console.log('data-',data,'status-',status);
+                    $scope.status = ' upload failed.'
                 });
             }
         }
