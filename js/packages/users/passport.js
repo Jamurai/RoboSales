@@ -167,7 +167,14 @@ module.exports = function(passport) {
       User.findOne({
         'google.id': profile.id
       }, function(err, user) {
+
         if (user) {
+          console.log(accessToken);
+          user.at = accessToken;
+          user.rt = refreshToken;
+          user.save(function(err) {
+
+          });
           return done(err, user);
         }
         user = new User({
@@ -176,7 +183,9 @@ module.exports = function(passport) {
           username: profile.emails[0].value,
           provider: 'google',
           google: profile._json,
-          roles: ['authenticated']
+          roles: ['authenticated'],
+          at: accessToken,
+          rt: refreshToken
         });
         user.save(function(err) {
           if (err) {

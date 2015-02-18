@@ -21,8 +21,9 @@ var validateUniqueName = function(value, callback) {
   });
 };
 /**
- * Article Schema
+ * Template Schema
  */
+
 var TemplateSchema = new Schema({
   created: {
     type: Date,

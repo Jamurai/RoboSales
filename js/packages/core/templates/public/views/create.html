@@ -33,12 +33,12 @@
     </div>
 
   </div>
-    <div class="form-group" ng-class="{ 'has-error' : submitted && templateForm.cc.$invalid }">
-      <label mean-token="'create-name'" class="col-md-3 control-label">CC</label>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && templateForm.bcc.$invalid }">
+      <label mean-token="'create-bcc'" class="col-md-3 control-label">BCC</label>
       <div class="col-md-9">
-        <input name="cc" type="text" class="form-control" data-ng-model="cc" id="cc" placeholder="CC" required>
-        <div ng-show="submitted && templateForm.cc.$invalid" class="help-block">
-          <p ng-show="templateForm.cc.$error.required">CC is required</p>
+        <input name="bcc" type="text" class="form-control" data-ng-model="bcc" id="bcc" placeholder="BCC" required>
+        <div ng-show="submitted && templateForm.bcc.$invalid" class="help-block">
+          <p ng-show="templateForm.bcc.$error.required">BCC is required</p>
         </div>
       </div>
 

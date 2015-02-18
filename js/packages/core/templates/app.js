@@ -3,9 +3,12 @@
 /*
  * Defining the Package
  */
+
 var Module = require('meanio').Module;
 
 var Templates = new Module('templates');
+
+
 
 /*
  * All MEAN packages require registration

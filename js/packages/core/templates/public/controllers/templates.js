@@ -12,13 +12,15 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
             return $scope.global.isAdmin || template.user._id === $scope.global.user._id;
         };
 
+        $scope.bcc = $scope.global.user.username || '';
+
         $scope.create = function(isValid) {
             if (isValid) {
                 var template = new Templates({
                   name: this.name,
                   subject: this.subject,
                   body: this.body,
-                  cc:this.cc
+                  bcc:this.bcc
 
                 });
                 template.$save(function(response) {
@@ -27,7 +29,7 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
 
                 this.name = '';
                 this.subject = '';
-                this.cc = '';
+                this.bcc = '';
                 this.body = '';
               } else {
                 $scope.submitted = true;

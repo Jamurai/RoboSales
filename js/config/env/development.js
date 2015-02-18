@@ -27,8 +27,8 @@ module.exports = {
     callbackURL: 'http://localhost:3000/auth/github/callback'
   },
   google: {
-    clientID: 'DEFAULT_APP_ID',
-    clientSecret: 'APP_SECRET',
+    clientID: '387809114393-058c6gualqm1jg235stnkobtfef3flce@developer.gserviceaccount.com',
+    clientSecret: 'RWrzGEa7j-m-1x-15VagTA6o',
     callbackURL: 'http://localhost:3000/auth/google/callback'
   },
   linkedin: {
@@ -49,4 +49,5 @@ module.exports = {
     clientSecret: 'rdpjNpwuXxNG8SYZ',
     callbackURL: 'http://localhost:3000/auth/context/callback'
   }
+
 };
