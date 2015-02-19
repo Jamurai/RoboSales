@@ -1,0 +1,41 @@
+<section data-ng-controller="ProspectsController" data-ng-init="findOne()">
+ <form name="prospectForm" class="form-horizontal col-md-6" role="form" data-ng-submit="update(prospectForm.$valid)" novalidate>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && prospectForm.first_name.$invalid }">
+      <label mean-token="'edit-first_name'" for="first_name" class="col-md-2 control-label">First Name</label>
+      <div class="col-md-10">
+        <input name="first_name" type="text" class="form-control" data-ng-model="prospect.first_name" id="first_name" placeholder="Title" required>
+        <div ng-show="submitted && prospectForm.first_name.$invalid" class="help-block">
+          <p ng-show="prospectForm.first_name.$error.required">First Name is required</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && prospectForm.last_name.$invalid }">
+      <label mean-token="'edit-last_name'" for="last_name" class="col-md-2 control-label">Last Name</label>
+      <div class="col-md-10">
+        <input name="last_name" data-ng-model="prospect.last_name" id="last_name" cols="30" rows="10" placeholder="Last Name" class="form-control" required>
+        <div ng-show="submitted && prospectForm.last_name.$invalid" class="help-block">
+          <p ng-show="prospectForm.last_name.$error.required">Last Name is required</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group" ng-class="{ 'has-error' : submitted && prospectForm.email.$invalid }">
+      <label mean-token="'edit-email'" for="email" class="col-md-2 control-label">Email</label>
+      <div class="col-md-10">
+        <input name="email" data-ng-model="prospect.email" id="email" cols="30" rows="10" placeholder="Email" class="form-control" required>
+        <div ng-show="submitted && prospectForm.email.$invalid" class="help-block">
+          <p ng-show="prospectForm.email.$error.required">Email is required</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-2 col-md-10">
+        <button mean-token="'edit-submit'" type="submit" class="btn btn-default">Submit</button>
+      </div>
+    </div>
+  </form>
+
+
+</section>
