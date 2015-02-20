@@ -33,7 +33,7 @@ var TemplateSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    validate: [validateUniqueName, 'Template Name already in-use']
+    //validate: [validateUniqueName, 'Template Name already in-use']
   },
   subject: {
     type: String,
