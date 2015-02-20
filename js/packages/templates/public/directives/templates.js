@@ -17,7 +17,7 @@ angular.module('mean.templates').directive("handlebars", function() {
                 var matches;
                 if(modelValue) {
                    matches = modelValue.match(pattern);
-                  // if(!matches) return true;
+                   if(!matches) return true;
                    if(matches && ((matches.indexOf("{{first_name}}") >= 0)
                       || (matches.indexOf("{{last_name}}") >= 0)))
                      return true;

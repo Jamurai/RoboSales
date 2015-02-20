@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  db: 'mongodb://' + (process.env.DB_PORT_27017_TCP_ADDR || 'localhost') + '/robosales-prod',
+  db: 'mongodb://' + (process.env.MONGOHQ_URL || process.env.MONGOSOUP_URL || 'localhost') + '/robosales-prod',
   /**
    * Database options that will be passed directly to mongoose.connect
    * Below are some examples.
@@ -30,29 +30,29 @@ module.exports = {
     name: 'RoboSales'
   },
   facebook: {
-    clientID: 'APP_ID',
+    clientID: 'DEFAULT_APP_ID',
     clientSecret: 'APP_SECRET',
     callbackURL: 'http://localhost:3000/auth/facebook/callback'
   },
   twitter: {
-    clientID: 'CONSUMER_KEY',
+    clientID: 'DEFAULT_CONSUMER_KEY',
     clientSecret: 'CONSUMER_SECRET',
     callbackURL: 'http://localhost:3000/auth/twitter/callback'
   },
   github: {
-    clientID: 'APP_ID',
+    clientID: 'DEFAULT_APP_ID',
     clientSecret: 'APP_SECRET',
     callbackURL: 'http://localhost:3000/auth/github/callback'
   },
-  google: {
-    clientID: '387809114393-058c6gualqm1jg235stnkobtfef3flce@developer.gserviceaccount.com',
-    clientSecret: '_f1qTah02wXT2g46DuGt4vZp',
-    callbackURL: 'http://localhost:3000/auth/google/callback'
-  },
   linkedin: {
-    clientID: 'API_KEY',
+    clientID: 'DEFAULT_API_KEY',
     clientSecret: 'SECRET_KEY',
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
+  },
+  google: {
+    clientID: '387809114393-058c6gualqm1jg235stnkobtfef3flce@developer.gserviceaccount.com',
+    clientSecret: 'RWrzGEa7j-m-1x-15VagTA6o',
+    callbackURL: 'http://robosales.herokuapp.com/auth/google/callback'
   },
   emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>
   mailer: {
@@ -66,6 +66,6 @@ module.exports = {
     clientID: 'hqjm132v',
     clientSecret: 'rdpjNpwuXxNG8SYZ',
     callbackURL: 'http://localhost:3000/auth/context/callback'
-  },
+  }
 
 };

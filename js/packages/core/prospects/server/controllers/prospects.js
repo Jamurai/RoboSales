@@ -118,13 +118,13 @@ exports.upload = function(req, res,next) {
     }
 
     function done(linesRead){
-        Prospect.find().sort('-created').exec(function(err, prospects) {
+        Prospect.find({'user':req.user._id}).sort('-created').exec(function(err, prospects) {
           if (err) {
             return res.status(500).json({
               error: 'Cannot list the prospects'
             });
           }
-          res.json(prospects);
+          return res.status(200).json(prospects);
 
         });
 
@@ -202,7 +202,7 @@ exports.show = function(req, res) {
  * List of prospects
  */
 exports.all = function(req, res) {
-  Prospect.find().sort('-created').populate('user', 'firstname lastname').exec(function(err, prospects) {
+  Prospect.find({'user':req.user._id}).sort('-created').populate('user', 'firstname lastname').exec(function(err, prospects) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the prospects'
@@ -224,14 +224,14 @@ exports.runcampaign = function(req,res) {
 
     //templates;
   //});
-  
-  Template.find({}).exec(function(err,templates) {
+
+  Template.find({'user':req.user._id}).exec(function(err,templates) {
 
       if(err) {
         res.status(500).json({'error':err});
       }
-
-      Prospect.find({}).exec(function(err,prospects) {  // <- this is the Promise interface.
+      console.log(templates);
+      Prospect.find({'user':req.user._id}).exec(function(err,prospects) {  // <- this is the Promise interface.
             if(err) {
               res.status(500).json({'error':err});
             }

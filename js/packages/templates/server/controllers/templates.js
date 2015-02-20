@@ -87,7 +87,7 @@ exports.show = function(req, res) {
  * List of Templates
  */
 exports.all = function(req, res) {
-  Template.find().sort('-created').populate('user', 'name username').exec(function(err, templates) {
+  Template.find({'user':req.user._id}).sort('-created').populate('user', 'name username').exec(function(err, templates) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the templates'

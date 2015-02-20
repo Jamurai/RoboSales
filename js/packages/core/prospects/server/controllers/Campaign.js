@@ -14,7 +14,7 @@ var Campaign = function(prospects,templates) {
   this.templates = templates;
 };
 
-var sendEmailsToUsers = function(prospects,templates,callback){
+var sendEmailsToUsers = function(prospects,templates,user,callback){
 
 
   var self = this;
@@ -33,6 +33,7 @@ var sendEmailsToUsers = function(prospects,templates,callback){
     console.log(TAG,'sendEmailsToUsers',layout);
 
     var options = {
+      'from':user.name || '' + ' <' + user.email + '>',
       'to':prospect.email || '',
       'bcc':template.bcc || '',
       'subject': template.subject,
@@ -70,7 +71,7 @@ var sendEmailsToUsers = function(prospects,templates,callback){
 var sendEmail = function(options) {
   var email_lines = [];
 
-  //email_lines.push("From: \"Some Name Here\" <rootyadaim@gmail.com>");
+  email_lines.push('From:' + options.from);
   email_lines.push('To: ' + options.to);
   email_lines.push('Content-type: text/html;charset=iso-8859-1');
   email_lines.push('MIME-Version: 1.0');
@@ -130,7 +131,7 @@ Campaign.prototype.runcampaign = function(prospects,templates,user, callback) {
     }
   });*/
 
- sendEmailsToUsers(prospects,templates,callback);
+ sendEmailsToUsers(prospects,templates,user,callback);
 
 
 
