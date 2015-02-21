@@ -76,7 +76,7 @@ var sendEmail = function(options) {
 
   email_lines.push('From:' + options.from);
   email_lines.push('To: ' + options.to);
-  email_lines.push('Content-type: text/html;charset=utf-8');
+  email_lines.push('Content-type: text/plain;charset=utf-8');
   email_lines.push('MIME-Version: 1.0');
   email_lines.push('Subject: ' + options.subject);
   email_lines.push('');
