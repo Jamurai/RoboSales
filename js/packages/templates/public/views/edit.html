@@ -1,6 +1,6 @@
 
 <section data-ng-controller="TemplatesController" ng-init="findOne()">
-  <form name="templateForm" class="form-horizontal col-md-6" role="form" data-ng-submit="create(templateForm.$valid)" novalidate>
+  <form name="templateForm" class="form-horizontal col-md-6" role="form" data-ng-submit="update(templateForm.$valid)" novalidate>
     <div class="form-group" ng-class="{ 'has-error' : submitted && templateForm.name.$invalid }">
       <label mean-token="'edit-name'" class="col-md-3 control-label">Name</label>
       <div class="col-md-9">
@@ -27,7 +27,7 @@
         <textarea name="body" data-ng-model="template.body" id="body" cols="30" rows="10" placeholder="Body" class="form-control" required handlebars></textarea>
         <div ng-show="submitted && templateForm.body.$invalid" class="help-block">
           <p ng-show="templateForm.body.$error.required">Body is required</p>
-          <span ng-message="handlebars">Only first_name and last_name allowed in parenthesis</span>
+          <span ng-message="handlebars">Only first_name and last_name allowed in curly braces</span>
         </div>
       </div>
     </div>
@@ -46,7 +46,7 @@
 
     <div class="form-group">
       <div class="col-md-offset-3 col-md-9">
-        <button mean-token="'create-submit'" type="submit" class="btn btn-info">Submit</button>
+        <button mean-token="'edit-submit'" type="submit" class="btn btn-info">Submit</button>
       </div>
     </div>
   </form>

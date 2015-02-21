@@ -7,6 +7,7 @@ var _ = require('lodash');
 var Handlebars = require('handlebars');
 var TAG = 'Campaign';
 var Q = require('q');
+ var URLSafeBase64 = require('urlsafe-base64');
 
 var Campaign = function(prospects,templates) {
 
@@ -69,11 +70,13 @@ var sendEmailsToUsers = function(prospects,templates,user,callback){
 };
 
 var sendEmail = function(options) {
+
+
   var email_lines = [];
 
   email_lines.push('From:' + options.from);
   email_lines.push('To: ' + options.to);
-  email_lines.push('Content-type: text/html;charset=iso-8859-1');
+  email_lines.push('Content-type: text/html;charset=utf-8');
   email_lines.push('MIME-Version: 1.0');
   email_lines.push('Subject: ' + options.subject);
   email_lines.push('');
@@ -81,10 +84,13 @@ var sendEmail = function(options) {
 
 
   var email =email_lines.join("\r\n").trim();
+  console.log(TAG,email);
+  //var base64EncodedEmail = new Buffer(email).toString('base64');
+  var base64EncodedEmail = URLSafeBase64.encode(new Buffer(email));
+  console.log(TAG,"Before encoding",base64EncodedEmail);
+//  base64EncodedEmail.replace(/\+/g, '-').replace(/\//g, '_');
 
-  var base64EncodedEmail = new Buffer(email).toString('base64');
-  base64EncodedEmail.replace(/\+/g, '-').replace(/\//g, '_');
-
+  console.log(TAG,"After Encoding",base64EncodedEmail);
   var params = {
     auth:oauth2Client,
     userId:'me',
@@ -98,6 +104,7 @@ var sendEmail = function(options) {
  var deferred = Q.defer();
  gmailapi.users.messages.send(params,function(err,response) {
    if(err) {
+      console.log(err);
       deferred.reject(err);
 
    } else {

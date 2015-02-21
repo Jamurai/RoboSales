@@ -27,7 +27,7 @@
         <textarea name="body" data-ng-model="body" id="body" cols="30" rows="10" placeholder="Body" class="form-control" required handlebars></textarea>
         <div ng-show="submitted && templateForm.body.$invalid" class="help-block">
           <p ng-show="templateForm.body.$error.required">Body is required</p>
-          <span ng-message="handlebars">Only first_name and last_name allowed in parenthesis</span>
+          <span ng-message="handlebars">Only first_name and last_name allowed in curly braces</span>
         </div>
       </div>
     </div>

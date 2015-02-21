@@ -65,6 +65,7 @@
     "serve-favicon": "2.2.0",
     "swig": "1.4.2",
     "time-grunt": "1.0.0",
+    "urlsafe-base64": "^1.0.0",
     "view-helpers": "0.1.5"
   },
   "devDependencies": {
