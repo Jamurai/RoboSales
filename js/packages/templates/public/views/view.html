@@ -1,18 +1,42 @@
 <section data-ng-controller="TemplatesController" ng-init="findOne()">
-  <span>{{template.created | date:'medium'}}</span>
-  <span>{{template.user.name}}</span>
-  <h3> {{template.name}}</h3>
-  <span> {{template.subject}}<span>
-  <span>{{template.body}}</span>
-  <span> {{template.cc}}</span>
+  <div class="row">
 
-  <div data-ng-if="hasAuthorization(template)">
-    <a class="btn" href="/#!/templates/{{template._id}}/edit">
-      <i class="glyphicon glyphicon-edit"></i>
-    </a>
-    <a class="btn" data-ng-click="remove(template);">
-      <i class="glyphicon glyphicon-trash"></i>
-    </a>
+    <table class="table table-hover table-bordered ">
+      <thead>
+        <tr>
+            <th>Created At</th>
+            <th>Name</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>BCC</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+     <tbody>
+       <tr>
+        <td>{{template.created | date:'medium'}}</td>
+        <td>{{template.name}}</td>
+        <td>{{template.subject}}</td>
+        <td style="white-space: pre-wrap;">{{template.body}}</td>
+        <td>{{template.bcc}}</td>
+        <td>
+          <div data-ng-if="hasAuthorization(template)">
+          <a class="btn" href="/#!/templates/{{template._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(template);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+
+
+
+
+
   </div>
-
 </section>
