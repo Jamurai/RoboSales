@@ -21,18 +21,20 @@ Templates.register(function(app, auth, database) {
 
     //We are adding a link to the main menu for all authenticated users
     Templates.menus.add({
-        title: 'Create Template',
-        link: 'createtemplate',
-        roles: ['authenticated'],
-        menu: 'main'
+        title: 'Templates',
+        link: 'templates',
+        roles: ['authenticated']
+
     });
 
+/*
     Templates.menus.add({
         title: 'List Templates',
         link: 'listtemplate',
         roles: ['authenticated'],
         menu: 'main'
     });
+*/
 
     /**
     //Uncomment to use. Requires meanio@0.3.7 or above
@@ -55,6 +57,8 @@ Templates.register(function(app, auth, database) {
         //you now have the settings object
     });
     */
+    Templates.aggregateAsset('css', 'templates.css');
+    Templates.angularDependencies(['ui.grid','ui.grid.resizeColumns','ui.grid.moveColumns']);
 
     return Templates;
 });

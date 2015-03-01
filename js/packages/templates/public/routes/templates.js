@@ -30,8 +30,16 @@ angular.module('mean.templates').config(['$stateProvider',
 
         });
 
-        $stateProvider.state('listtemplate', {
+        $stateProvider.state('templates', {
             url: '/templates',
+            templateUrl: 'templates/views/index.html',
+            resolve: {
+              loggedin: checkLoggedin
+            }
+
+        });
+        $stateProvider.state('listtemplate', {
+            url: '/templates/list',
             templateUrl: 'templates/views/list.html',
             resolve: {
               loggedin: checkLoggedin

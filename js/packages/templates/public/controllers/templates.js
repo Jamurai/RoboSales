@@ -2,9 +2,39 @@
 
 angular.module('mean.templates').controller('TemplatesController', ['$scope', '$location','$stateParams','Global', 'Templates',
     function($scope, $location,$stateParams, Global, Templates) {
+
+      
         $scope.global = Global;
         $scope.package = {
             name: 'templates'
+        };
+
+      //  $scope.actionTemplate ='<button ng-click="grid.appScope.remove(row.entity)">Click Here</button>'
+
+
+        $scope.actionTemplate ='<span>' +
+                  '<a href="/#!/templates/{{row.entity._id}}/edit" class="btn">' +
+                  '<i class="glyphicon glyphicon-edit"></i> </a>' +
+                  '<a href="" class="btn" data-ng-click="grid.appScope.remove(row.entity)">' +
+                  '<i class="glyphicon glyphicon-trash"></i></a>' +
+                  '</span>';
+
+
+        $scope.columns = [
+                {field: 'name', displayName: 'Name'},
+                {field: 'subject', displayName: 'Subject'},
+                {field: 'user.name', displayName: 'Created By'},
+                {field: 'sent', displayName: 'Sent'},
+                {field: 'opened', displayName: 'Opened'},
+                {field: 'replied', displayName: 'Replied'},
+                {field: 'actions', displayName: 'Actions',
+                            cellTemplate: $scope.actionTemplate}
+        ];
+        $scope.gridOptions = {
+          enableSorting: true,
+          data: 'templates',
+          columnDefs: $scope.columns
+
         };
 
         $scope.hasAuthorization = function(template) {
@@ -24,7 +54,8 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
 
                 });
                 template.$save(function(response) {
-                  $location.path('templates/' + response._id);
+                  //$location.path('templates/' + response._id);
+                  $location.path('templates');
                 });
 
                 this.name = '';
@@ -39,6 +70,7 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
         $scope.find = function() {
           Templates.query(function(templates) {
             $scope.templates = templates;
+
           });
         };
 
@@ -68,6 +100,8 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
           }
         };
 
+
+
       $scope.update = function(isValid) {
         if (isValid) {
           var template = $scope.template;
@@ -77,7 +111,8 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
           template.updated.push(new Date().getTime());
 
           template.$update(function() {
-            $location.path('templates/' + template._id);
+            //$location.path('templates/' + template._id);
+            $location.path('templates');
           });
         } else {
           $scope.submitted = true;

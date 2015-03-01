@@ -34,8 +34,10 @@ var sendEmailsToUsers = function(prospects,templates,user,callback){
     console.log(TAG,'sendEmailsToUsers',layout);
 
     var options = {
-      'from':user.name || '' + ' <' + user.email + '>',
-      'to':prospect.email || '',
+      //'from':user.name || '',
+      //'from' : 'Prakash Baskaran <prakashbask@gmail.com>',
+      'from' : user.name + ' ' + '<' + user.email +'>',
+      'to': prospect.first_name + ' ' + prospect.last_name + ' <' + prospect.email +'>',
       'bcc':template.bcc || '',
       'subject': template.subject,
       'layout' : layout
@@ -74,8 +76,9 @@ var sendEmail = function(options) {
 
   var email_lines = [];
 
-  email_lines.push('From:' + options.from);
+  email_lines.push('From: ' + options.from);
   email_lines.push('To: ' + options.to);
+  email_lines.push('Bcc: ' + options.bcc);
   email_lines.push('Content-type: text/plain;charset=utf-8');
   email_lines.push('MIME-Version: 1.0');
   email_lines.push('Subject: ' + options.subject);

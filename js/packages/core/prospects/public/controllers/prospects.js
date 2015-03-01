@@ -11,6 +11,29 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
       return $scope.global.isAdmin || prospect.user._id === $scope.global.user._id;
     };
 
+    $scope.actionTemplate ='<span>' +
+              '<input type="checkbox" aria-label="...">' +
+              '</span>';
+
+    $scope.headerTemplate = '<span class="gridheader"><input type="checkbox" aria-label="..."></span>';
+
+
+    $scope.columns = [
+            {field: 'action', displayName: '', width:10,cellTemplate: $scope.actionTemplate,headerCellTemplate:$scope.headerTemplate},
+            {field: 'first_name', displayName: 'First'},
+            {field: 'last_name', displayName: 'Last'},
+            {field: 'title', displayName: 'Title'},
+            {field: 'company', displayName: 'Company'},
+            {field: 'email', displayName: 'Email'},
+            {field: 'phone', displayName: 'Phone'}
+
+    ];
+    $scope.gridOptions = {
+      enableSorting: true,
+      data: 'prospects',
+      columnDefs: $scope.columns
+
+    };
 
 
     $scope.$watch('files', function () {
@@ -23,7 +46,7 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
                 var file = files[i];
                 console.log(file);
                 $upload.upload({
-                    url: '/prospects/upload',
+                    url: '/contacts/upload',
                     file: file
                 }).progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
@@ -67,7 +90,7 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
 
         });
         prospect.$save(function(response) {
-          $location.path('prospects/' + response._id);
+          $location.path('contacts/' + response._id);
         });
 
         this.first_name = '';
@@ -85,11 +108,11 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
               $scope.prospects.splice(i,1);
             }
           }
-          $location.path('prospects');
+          $location.path('contacts');
         });
       } else {
         $scope.prospect.$remove(function(response) {
-          $location.path('prospects');
+          $location.path('contacts');
         });
       }
     };
@@ -103,7 +126,7 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
         prospect.updated.push(new Date().getTime());
 
         prospect.$update(function() {
-          $location.path('prospects/' + prospect._id);
+          $location.path('contacts/' + prospect._id);
         });
       } else {
         $scope.submitted = true;

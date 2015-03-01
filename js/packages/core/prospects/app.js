@@ -19,20 +19,17 @@ prospects.register(function(app, auth, database) {
   //We are adding a link to the main menu for all authenticated users
   prospects.menus.add({
     'roles': ['authenticated'],
-    'title': 'Import Prospects',
-    'link': 'importprospects'
+    'title': 'Contacts',
+    'link': 'contacts',
+    'menu': 'main'
   });
+
+
 
   prospects.menus.add({
     'roles': ['authenticated'],
-    'title': 'List Prospects',
-    'link': 'listprospects'
-  });
-
-  prospects.menus.add({
-    'roles': ['authenticated'],
-    'title': 'Run Campaign',
-    'link': 'runcampaign'
+    'title': 'Import',
+    'link': 'import'
   });
 
   //Articles.aggregateAsset('js','/packages/system/public/services/menus.js', {group:'footer', absolute:true, weight:-9999});

@@ -8,3 +8,8 @@ ul.articles li:not(:last-child) {
 .box {
 	margin-top:10%;
 }
+
+.gridheader input[type="checkbox"] {
+margin: 9px 0 0 6px;
+width: auto;
+}

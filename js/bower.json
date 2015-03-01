@@ -13,6 +13,7 @@
     "web-bootstrap": "./node_modules/meanio/resources/web-bootstrap.js",
     "angular-csv-import": "~0.0.14",
     "ng-file-upload": "~3.0.2",
-    "ng-file-upload-shim": "~3.0.2"
+    "ng-file-upload-shim": "~3.0.2",
+    "angular-ui-grid": "~3.0.0-rc.20"
   }
 }

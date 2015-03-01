@@ -25,6 +25,7 @@ Theme.register(function(app, auth, database) {
 //  });
 
   Theme.aggregateAsset('css', 'loginForms.css');
+  //Theme.aggregateAsset('css', 'styles.css');
   Theme.aggregateAsset('css', 'theme.css');
   Theme.angularDependencies(['mean.system']);
 

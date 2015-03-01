@@ -26,36 +26,43 @@ angular.module('mean.prospects').config(['$stateProvider',
     // states for my app
 
     $stateProvider
-      .state('importprospects', {
-        url: '/prospects/import',
+      .state('import', {
+        url: '/contacts/import',
         templateUrl: 'prospects/views/import.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
-      .state('listprospects', {
-        url: '/prospects',
+      .state('contacts', {
+        url: '/contacts',
+        templateUrl: 'prospects/views/index.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
+      })
+      .state('listcontacts', {
+        url: '/contacts',
         templateUrl: 'prospects/views/list.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
-      .state('edit prospect', {
-        url: '/prospects/:prospectId/edit',
+      .state('editcontact', {
+        url: '/contacts/:contactId/edit',
         templateUrl: 'prospects/views/edit.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
-      .state('prospect by id', {
-        url: '/prospects/:prospectId',
+      .state('contactbyid', {
+        url: '/contacts/:contactId',
         templateUrl: 'prospects/views/view.html',
         resolve: {
           loggedin: checkLoggedin
         }
       })
       .state('runcampaign', {
-        url: '/prospects/runcampaign',
+        url: '/contacts/runcampaign',
         templateUrl: 'prospects/views/campaign.html',
         resolve: {
           loggedin: checkLoggedin
