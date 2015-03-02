@@ -4,15 +4,21 @@
  * Module dependencies.
  */
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose-q')(require('mongoose'));
 
   var Prospect = mongoose.model('Prospect'),
   Template = mongoose.model('Template'),
+  ImportHistory = mongoose.model('History'),
+  Q = require('q'),
   _ = require('lodash'),
   fs = require('fs'),
   Parse = require('csv-parse'),
   TAG='Prospects',
+  DUPLICATE_CODE=11000,
   Campaign = require('./Campaign');
+
+
+
 /**
  * Find prospect by id
 
@@ -48,8 +54,14 @@ var parseCSVFile = function(sourceFilePath, columns, onNewRecord, handleError, d
     var source = fs.createReadStream(sourceFilePath);
 
     var linesRead = 0;
-    var result = {};
+    var records = {
+      'duplicate':0,
+      'success':0,
+      'failed':0
+    }
 
+    var result = {};
+    var queue =[];
     var parser = Parse({
         delimiter: ',',
         columns:columns
@@ -58,10 +70,14 @@ var parseCSVFile = function(sourceFilePath, columns, onNewRecord, handleError, d
 
     parser.on("readable", function(){
       var record;
+
         while (record = parser.read()) {
             linesRead++;
-            onNewRecord(record);
+            queue.push(onNewRecord(record));
         }
+
+
+
     });
 
     parser.on("error", function(error){
@@ -69,10 +85,33 @@ var parseCSVFile = function(sourceFilePath, columns, onNewRecord, handleError, d
     });
 
     parser.on("end", function(){
+        Q.allSettled(queue)
+        .then(function (results) {
+          var errors = [];
+          results.forEach(function (result) {
+              if (result.state === "fulfilled") {
+                var count = records['success'];
+                records['success'] = count+1;
 
-        done(linesRead);
+              } else {
+                  //errors.push(result.reason);
+                  if(result.reason.code && result.reason.code == DUPLICATE_CODE) {
+                    var count = records['duplicate'];
+                    records['duplicate'] = count+1;
+                  } else {
+                    var count = records['failed'];
+                    records['failed'] = count+1;
+
+                  }
+
+
+              }
+          });
+          done(linesRead,records);
+        });
+
+
     });
-
 
 
     source.pipe(parser);
@@ -92,21 +131,23 @@ exports.upload = function(req, res,next) {
 
         var prospect = new Prospect(record);
         prospect.user = req.user;
+        return prospect.saveQ();
 
+/*
         prospect.save(function(err) {
           if (err) {
             //TODO
-
+              return callback(err);
 
 
 
           } else {
-
+              return callback();
 
           }
 
 
-        });
+        });*/
 
     }
 
@@ -117,8 +158,8 @@ exports.upload = function(req, res,next) {
         });
     }
 
-    function done(linesRead){
-        Prospect.find({'user':req.user._id}).sort('-created').exec(function(err, prospects) {
+    function done(linesRead,records){
+      /*  Prospect.find({'user':req.user._id}).sort('-created').exec(function(err, prospects) {
           if (err) {
             return res.status(500).json({
               error: 'Cannot list the prospects'
@@ -127,6 +168,28 @@ exports.upload = function(req, res,next) {
           return res.status(200).json(prospects);
 
         });
+      */
+      var status = records.success + ' new, ' + records.duplicate + ' duplicate, ' + records.failed + ' failed';
+      var history = new ImportHistory({
+        'status': status,
+        'user':req.user
+      })
+      history.saveQ()
+      .then(function(result){
+
+      })
+      .catch(function(err){})
+      .done(function() {
+        ImportHistory.find({'user':req.user._id}).sort('-created').exec(function(err, historyitems) {
+            if (err) {
+              return res.status(500).json({
+                error: 'Cannot list the import history'
+              });
+            }
+            return res.status(200).json(historyitems);
+
+          });
+      });
 
     }
 
@@ -245,11 +308,6 @@ exports.runcampaign = function(req,res) {
             });
       });
   });
-/*
-  }, function(err) {
-    console.log(TAG,'Run Campaign',err);
-    res.status(500).json({'error':err});
-  });*/
 
 
-}
+};

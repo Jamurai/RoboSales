@@ -3,7 +3,7 @@
 angular.module('mean.templates').controller('TemplatesController', ['$scope', '$location','$stateParams','Global', 'Templates',
     function($scope, $location,$stateParams, Global, Templates) {
 
-      
+
         $scope.global = Global;
         $scope.package = {
             name: 'templates'

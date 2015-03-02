@@ -1,6 +1,8 @@
 'use strict';
 
 var prospects = require('../controllers/prospects');
+var filters = require('../controllers/filters');
+var history = require('../controllers/history');
 var Multer = require('multer');
 
 // Article authorization helpers
@@ -21,6 +23,13 @@ module.exports = function(Prospects, app, auth) {
   app.route('/prospects/upload')
     .post(auth.requiresLogin, [Multer({dest:'./temp'}), prospects.upload]);
 
+  app.route('/prospects/filters')
+    .get(filters.all)
+    .post(auth.requiresLogin, filters.create);
+
+  app.route('/prospects/history')
+    .get(history.all);
+
   app.route('/prospects/runcampaign')
         .post(auth.requiresLogin,hasAuthorization, prospects.runcampaign);
 
@@ -30,6 +39,8 @@ module.exports = function(Prospects, app, auth) {
       .delete(auth.isMongoId, auth.requiresLogin, hasAuthorization, prospects.destroy);
 
 
+
   app.param('prospectId', prospects.prospect);
+
 
 };

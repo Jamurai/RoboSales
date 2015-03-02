@@ -67,6 +67,13 @@ angular.module('mean.prospects').config(['$stateProvider',
         resolve: {
           loggedin: checkLoggedin
         }
+      })
+      .state('createfilter', {
+        url: '/contacts/filters/create',
+        templateUrl: 'prospects/views/createfilters.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
       });
 
 

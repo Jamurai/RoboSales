@@ -51,6 +51,7 @@
     "lodash": "2.4.1",
     "meanio": "linnovate/meanio",
     "mongoose": "3.8.21",
+    "mongoose-q": "0.0.16",
     "morgan": "1.5.0",
     "ms": "0.6.2",
     "multer": "^0.1.7",

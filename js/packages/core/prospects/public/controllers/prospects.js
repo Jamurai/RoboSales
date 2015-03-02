@@ -46,7 +46,7 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
                 var file = files[i];
                 console.log(file);
                 $upload.upload({
-                    url: '/contacts/upload',
+                    url: '/prospects/upload',
                     file: file
                 }).progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
