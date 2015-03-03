@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
   GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
   LinkedinStrategy = require('passport-linkedin').Strategy,
   User = mongoose.model('User'),
+  Setting = mongoose.model('Setting'),
   config = require('meanio').loadConfig();
 
 module.exports = function(passport) {
@@ -112,6 +113,7 @@ module.exports = function(passport) {
           facebook: profile._json,
           roles: ['authenticated']
         });
+
         user.save(function(err) {
           if (err) {
             console.log(err);
@@ -167,6 +169,20 @@ module.exports = function(passport) {
       User.findOne({
         'google.id': profile.id
       }, function(err, user) {
+        Setting.findOne({
+          user:user
+        },function(err,setting){
+          console.log("PASSPORT",setting);
+          if(!setting) {
+            setting = new Setting({
+              first_name: profile.displayName,
+              email:profile.emails[0].value,
+              bcc:profile.emails[0].value,
+              user:user
+            });
+            setting.save();
+          }
+        });
 
         if (user) {
           console.log(accessToken);
@@ -174,9 +190,11 @@ module.exports = function(passport) {
           user.rt = refreshToken;
           user.save(function(err) {
 
+
           });
           return done(err, user);
         }
+
         user = new User({
           name: profile.displayName,
           email: profile.emails[0].value,
@@ -187,6 +205,7 @@ module.exports = function(passport) {
           at: accessToken,
           rt: refreshToken
         });
+
         user.save(function(err) {
           if (err) {
             console.log(err);

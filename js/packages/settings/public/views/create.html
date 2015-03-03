@@ -1,0 +1,53 @@
+<section data-ng-controller="SettingsController">
+
+  <form name="settingForm" class="form-horizontal col-md-6" role="form" data-ng-submit="create(settingForm.$valid)" novalidate>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && settingForm.name.$invalid }">
+      <label mean-token="'create-name'" class="col-md-3 control-label">Name</label>
+      <div class="col-md-9">
+        <input name="name" type="text" class="form-control" data-ng-model="name" id="name" placeholder="Setting Name" required>
+        <div ng-show="submitted && settingForm.name.$invalid" class="help-block">
+          <p ng-show="settingForm.name.$error.required">Name is required</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && settingForm.subject.$invalid }">
+      <label mean-token="'create-name'" class="col-md-3 control-label">Subject</label>
+      <div class="col-md-9">
+        <input name="subject" type="text" class="form-control" data-ng-model="subject" id="subject" placeholder="Subject" required>
+        <div ng-show="submitted && settingForm.subject.$invalid" class="help-block">
+          <p ng-show="settingForm.subject.$error.required">Subject is required</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && settingForm.body.$invalid }">
+      <label mean-token="'create-body'" for="body" class="col-md-3 control-label">Body</label>
+      <div class="col-md-9">
+        <textarea name="body" data-ng-model="body" id="body" cols="30" rows="10" placeholder="Body" class="form-control" required handlebars></textarea>
+        <div ng-show="submitted && settingForm.body.$invalid" class="help-block">
+          <p ng-show="settingForm.body.$error.required">Body is required</p>
+          <span ng-message="handlebars">Only first_name and last_name allowed in curly braces</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+    <div class="form-group" ng-class="{ 'has-error' : submitted && settingForm.bcc.$invalid }">
+      <label mean-token="'create-bcc'" class="col-md-3 control-label">BCC</label>
+      <div class="col-md-9">
+        <input name="bcc" type="text" class="form-control" data-ng-model="bcc" id="bcc" placeholder="BCC" required>
+        <div ng-show="submitted && settingForm.bcc.$invalid" class="help-block">
+          <p ng-show="settingForm.bcc.$error.required">BCC is required</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="form-group">
+      <div class="col-md-offset-3 col-md-9">
+        <button mean-token="'create-submit'" type="submit" class="btn btn-info">Submit</button>
+      </div>
+    </div>
+  </form>
+</section>

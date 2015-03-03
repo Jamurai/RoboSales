@@ -1,0 +1,21 @@
+<section data-ng-controller="SettingsController" data-ng-init="find()">
+  <ul class="settings unstyled">
+    <li data-ng-repeat="setting in settings">
+
+
+      <span>
+        <a data-ng-href="#!/settings/{{setting._id}}">{{setting.name}}</a>
+        <span data-ng-if="hasAuthorization(setting)">
+          <a class="btn" href="/#!/settings/{{setting._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(setting);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+        </span>
+      </span>
+
+    </li>
+  </ul>
+  <h3 data-ng-hide="!settings || settings.length">No settings yet. <br> Why don't you <a href="/#!/settings/create">Create One</a>?</h3>
+</section>

@@ -1,0 +1,42 @@
+<section data-ng-controller="SettingsController" ng-init="findOne()">
+  <div class="row">
+
+    <table class="table table-hover table-bordered ">
+      <thead>
+        <tr>
+            <th>Created At</th>
+            <th>Name</th>
+            <th>Subject</th>
+            <th>Body</th>
+            <th>BCC</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+     <tbody>
+       <tr>
+        <td>{{setting.created | date:'medium'}}</td>
+        <td>{{setting.name}}</td>
+        <td>{{setting.subject}}</td>
+        <td style="white-space: pre-wrap;">{{setting.body}}</td>
+        <td>{{setting.bcc}}</td>
+        <td>
+          <div data-ng-if="hasAuthorization(setting)">
+          <a class="btn" href="/#!/settings/{{setting._id}}/edit">
+            <i class="glyphicon glyphicon-edit"></i>
+          </a>
+          <a class="btn" data-ng-click="remove(setting);">
+            <i class="glyphicon glyphicon-trash"></i>
+          </a>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+
+    </table>
+
+
+
+
+
+  </div>
+</section>
