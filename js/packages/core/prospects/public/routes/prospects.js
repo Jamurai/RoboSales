@@ -33,6 +33,13 @@ angular.module('mean.prospects').config(['$stateProvider',
           loggedin: checkLoggedin
         }
       })
+      .state('importfields', {
+        url: '/contacts/import/fields',
+        templateUrl: 'prospects/views/importfields.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
+      })
       .state('contacts', {
         url: '/contacts',
         templateUrl: 'prospects/views/index.html',

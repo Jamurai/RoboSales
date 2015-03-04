@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.prospects').controller('ImportController', ['$scope', '$upload','$stateParams', '$location', 'Global', 'Prospects', 'ImportHistory',
-  function($scope, $upload, $stateParams, $location,Global, Prospects, ImportHistory) {
+angular.module('mean.prospects').controller('ImportController', ['$scope', '$upload','$state','$stateParams', '$location', 'Global', 'Prospects', 'ImportHistory','ImportFields',
+  function($scope, $upload, $state, $stateParams, $location,Global, Prospects, ImportHistory,ImportFields) {
     $scope.global = Global;
 
     $scope.imported=[];
@@ -26,8 +26,45 @@ angular.module('mean.prospects').controller('ImportController', ['$scope', '$upl
 
 
     $scope.$watch('files', function () {
-        $scope.upload($scope.files);
+        //$scope.upload($scope.files);
+        $scope.readFile($scope.files);
     });
+
+
+    $scope.readFile = function(files) {
+
+      if (files && files.length) {
+        for (var i = 0; i < files.length; i++) {
+          var file = files[i];
+          var reader = new FileReader();
+          reader.onload = function(progressEvent){
+            // Entire file
+                      // By lines
+            var lines = this.result.split('\n');
+            if(lines && lines.length > 1) {
+              var result = {
+                'header':lines[0] || '',
+                'sample':lines[1] || ''
+              }
+
+              ImportFields.setFields(result);
+
+              $state.go('importfields');
+
+
+            } else {
+              alert("Invalid File");
+            }
+            /*
+            for(var line = 0; line < lines.length; line++){
+              console.log(lines[line]);
+            }*/
+          };
+          reader.readAsText(file);
+        }
+      }
+
+    };
 
     $scope.upload = function (files) {
         if (files && files.length) {
@@ -61,6 +98,7 @@ angular.module('mean.prospects').controller('ImportController', ['$scope', '$upl
         $scope.imported = imported;
       });
     };
+
 
 
   }

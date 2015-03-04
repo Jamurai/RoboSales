@@ -78,6 +78,7 @@ angular.module('mean.settings').controller('SettingsController', ['$scope', '$lo
 
       $scope.update = function(isValid) {
         if (isValid) {
+          $scope.loader = true;
           var setting = $scope.setting;
           if(!setting.updated) {
             setting.updated = [];
@@ -88,6 +89,7 @@ angular.module('mean.settings').controller('SettingsController', ['$scope', '$lo
             //$location.path('settings/' + setting._id);
             $location.path('settings');
             $scope.saved=true;
+            $scope.loader=false;
           });
         } else {
           $scope.submitted = true;

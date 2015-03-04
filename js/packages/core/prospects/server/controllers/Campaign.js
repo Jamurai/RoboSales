@@ -15,15 +15,25 @@ var Campaign = function(prospects,templates) {
   this.templates = templates;
 };
 
-var sendEmailsToUsers = function(prospects,templates,user,callback){
+var sendEmailsToUsers = function(prospects,templates,settings,user,callback){
 
 
   var self = this;
   var promises = [];
 
   var template = templates[0] || '';
+  var setting = settings[0] || '';
 
   var htemplate = Handlebars.compile(template.body);
+
+  var stemplate = Handlebars.compile(setting.signature);
+  var sdata = {'User_FirstName': setting.first_name || '',
+               'User_LastName': setting.last_name || '',
+               'User_Email': setting.email || '',
+               'User_Phone': setting.phone || ''
+  };
+  var signaturelayout = stemplate(sdata);
+  console.log(TAG,'sendEmailsToUsers',signaturelayout);
 
   _.each(prospects,function(prospect){
 
@@ -38,9 +48,10 @@ var sendEmailsToUsers = function(prospects,templates,user,callback){
       //'from' : 'Prakash Baskaran <prakashbask@gmail.com>',
       'from' : user.name + ' ' + '<' + user.email +'>',
       'to': prospect.first_name + ' ' + prospect.last_name + ' <' + prospect.email +'>',
-      'bcc':template.bcc || '',
+      'bcc':setting.bcc || template.bcc || '',
       'subject': template.subject,
-      'layout' : layout
+      'layout' : layout,
+      'signaturelayout':signaturelayout
 
     };
     promises.push(sendEmail(options));
@@ -84,6 +95,7 @@ var sendEmail = function(options) {
   email_lines.push('Subject: ' + options.subject);
   email_lines.push('');
   email_lines.push(options.layout);
+  email_lines.push(options.signaturelayout);
 
 
   var email =email_lines.join("\r\n").trim();
@@ -119,7 +131,7 @@ var sendEmail = function(options) {
  return deferred.promise;
 }
 
-Campaign.prototype.runcampaign = function(prospects,templates,user, callback) {
+Campaign.prototype.runcampaign = function(prospects,templates,settings,user, callback) {
 
 
 
@@ -141,7 +153,7 @@ Campaign.prototype.runcampaign = function(prospects,templates,user, callback) {
     }
   });*/
 
- sendEmailsToUsers(prospects,templates,user,callback);
+ sendEmailsToUsers(prospects,templates,settings,user,callback);
 
 
 

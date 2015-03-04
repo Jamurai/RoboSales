@@ -31,13 +31,19 @@ prospects.register(function(app, auth, database) {
     'title': 'Import',
     'link': 'import'
   });
-
+/*
+  prospects.menus.add({
+    'roles': ['authenticated'],
+    'title': 'RunCampaign',
+    'link': 'runcampaign'
+  });
+*/
   //Articles.aggregateAsset('js','/packages/system/public/services/menus.js', {group:'footer', absolute:true, weight:-9999});
   //Articles.aggregateAsset('js', 'test.js', {group: 'footer', weight: -1});
 
 
   prospects.aggregateAsset('css', 'prospects.css');
-  prospects.angularDependencies(['angularFileUpload']);
+  prospects.angularDependencies(['angularFileUpload','ngSanitize','ui.select']);
 
   return prospects;
 });

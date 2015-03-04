@@ -8,8 +8,10 @@ var mongoose = require('mongoose-q')(require('mongoose'));
 
   var Prospect = mongoose.model('Prospect'),
   Template = mongoose.model('Template'),
+  Setting = mongoose.model('Setting'),
   ImportHistory = mongoose.model('History'),
   Q = require('q'),
+  async = require('async'),
   _ = require('lodash'),
   fs = require('fs'),
   Parse = require('csv-parse'),
@@ -288,26 +290,61 @@ exports.runcampaign = function(req,res) {
     //templates;
   //});
 
-  Template.find({'user':req.user._id}).exec(function(err,templates) {
 
-      if(err) {
-        res.status(500).json({'error':err});
-      }
-      console.log(templates);
-      Prospect.find({'user':req.user._id}).exec(function(err,prospects) {  // <- this is the Promise interface.
-            if(err) {
-              res.status(500).json({'error':err});
-            }
-            var campaign = new Campaign(prospects,templates);
-            campaign.runcampaign(prospects,templates,req.user,function(err,response){
-              if(err) {
-                res.status(500).json({'error':err});
-              } else {
-                res.status(200).json({ 'success':'Success'});
-              }
-            });
+  async.waterfall([
+    function(cb) {
+      Template.find({'user':req.user._id}).exec(function(err,templates) {
+          if(err) {
+             cb(err);
+          } else {
+            cb(null,templates);
+          }
       });
+    },
+    function(templates,cb) {
+
+      Setting.find({'user':req.user._id}).exec(function(err,settings) {
+
+          if(err) {
+             cb(err);
+          } else {
+            cb(null,templates,settings);
+          }
+      });
+    },
+    function(templates,settings,cb) {
+
+      Prospect.find({'user':req.user._id}).exec(function(err,prospects) {
+        if(err) {
+           cb(err);
+         } else {
+          cb(null,templates,settings,prospects);
+        }
+      });
+
+
+    },
+    function(templates,settings,prospects,cb){
+      var campaign = new Campaign(prospects,templates,settings);
+      campaign.runcampaign(prospects,templates,settings,req.user,function(err,response){
+        if(err) {
+          cb(err);
+        } else {
+          cb(null,'Done');
+        }
+      });
+    }
+  ],function(err,results){
+
+    if(err) {
+      res.status(500).json({'error':err});
+    } else {
+      res.status(200).json({ 'success':'Success'});
+    }
+
+
   });
+
 
 
 };
