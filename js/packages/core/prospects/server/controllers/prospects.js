@@ -92,11 +92,13 @@ var parseCSVFile = function(sourceFilePath, columns, onNewRecord, handleError, d
           var errors = [];
           results.forEach(function (result) {
               if (result.state === "fulfilled") {
+                console.log("SAVED",result.state);
                 var count = records['success'];
                 records['success'] = count+1;
 
               } else {
                   //errors.push(result.reason);
+                  console.log("SAVED",result.state);
                   if(result.reason.code && result.reason.code == DUPLICATE_CODE) {
                     var count = records['duplicate'];
                     records['duplicate'] = count+1;
@@ -126,7 +128,9 @@ exports.upload = function(req, res,next) {
 
   var filePath = req.files.file.path;
 
+
     console.log(filePath);
+
 
 
     function onNewRecord(record){
@@ -134,22 +138,6 @@ exports.upload = function(req, res,next) {
         var prospect = new Prospect(record);
         prospect.user = req.user;
         return prospect.saveQ();
-
-/*
-        prospect.save(function(err) {
-          if (err) {
-            //TODO
-              return callback(err);
-
-
-
-          } else {
-              return callback();
-
-          }
-
-
-        });*/
 
     }
 
@@ -197,7 +185,31 @@ exports.upload = function(req, res,next) {
 
 
 
-    var columns = true;
+    var columns = function(headerline) {
+      console.log(TAG,"headerline",headerline);
+
+      var remap;
+
+      try {
+          remap = JSON.parse(req.body.remap);
+      }catch (err){
+        console.log(err);
+      }
+
+      for(var i=0; i < headerline.length; i++) {
+
+          var column = headerline[i];
+          if(remap[column]){
+
+            headerline[i] = remap[column];
+            console.log("column",column);
+
+          }
+      };
+      console.log("headerlinemodified",headerline);
+      return headerline;
+
+    };
     parseCSVFile(filePath, columns, onNewRecord, onError, done);
 
 

@@ -16,6 +16,7 @@ angular.module('mean.prospects').factory('ImportHistory', ['$resource',
 ])
 .service('ImportFields',function() {
   this.fields = '';
+  this.files;
 
   this.setFields = function(fields) {
     this.fields = fields;
@@ -23,6 +24,14 @@ angular.module('mean.prospects').factory('ImportHistory', ['$resource',
 
   this.getFields = function() {
     return this.fields;
+  }
+
+  this.setFiles = function(files) {
+    this.files = files;
+  }
+
+  this.getFiles = function() {
+    return this.files;
   }
 
 });

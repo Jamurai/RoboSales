@@ -15,7 +15,7 @@
         <td>{{item.name}}</td>
         <td>{{item.value}}</td>
         <td>
-             <ui-select ng-model="field[$index].selected" theme="selectize" ng-disabled="disabled" style="width: 300px;">
+             <ui-select ng-model="field[$index]" theme="bootstrap" ng-disabled="disabled" style="width: 300px;">
               <ui-select-match placeholder="Select Field">{{$select.selected}}</ui-select-match>
               <ui-select-choices repeat="field in fields">
                 <span ng-bind-html="field"></span>
@@ -29,6 +29,8 @@
 
     </table>
 
+
+    <a ng-click="upload()"><button class="btn btn-primary">Import <span ng-class="loader ? 'glyphicon glyphicon-refresh glyphicon-spin' : ''" ></span></button></a>
 
 
 

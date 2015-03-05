@@ -1,6 +1,7 @@
 'use strict';
 
-var mean = require('meanio');
+var mean = require('meanio'),
+  lodash = require('lodash');
 
 module.exports = function(System, app, auth, database) {
 
@@ -41,6 +42,12 @@ module.exports = function(System, app, auth, database) {
                       }
                       ];
 
+      console.log("MENUS",roles);
+
+      if(lodash.indexOf(roles,'anonymous') > -1) {
+        items = [];
+      }
+
     /*
       var items = mean.menus.get({
         roles: roles,
@@ -50,7 +57,7 @@ module.exports = function(System, app, auth, database) {
         })
       });
       */
-      
+
       res.json(items);
     });
 };

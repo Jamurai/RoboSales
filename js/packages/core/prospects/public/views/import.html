@@ -8,5 +8,5 @@
       <div ng-repeat="file in files"> {{file.name}} {{status}}</div>
     </div>
   </div>
-  <div class="gridStyle" ui-grid="gridOptions" ></div>
+  <div class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="getTableHeight()"></div>
 </section>

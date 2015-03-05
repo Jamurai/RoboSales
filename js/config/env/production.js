@@ -50,8 +50,8 @@ module.exports = {
     callbackURL: 'http://localhost:3000/auth/linkedin/callback'
   },
   google: {
-    clientID: '387809114393-058c6gualqm1jg235stnkobtfef3flce@developer.gserviceaccount.com',
-    clientSecret: 'RWrzGEa7j-m-1x-15VagTA6o',
+    clientID: '3754005225157-jpnj7hke5sanfhihglfu0a8ivlrguc0o@developer.gserviceaccount.com',
+    clientSecret: '4JApAl0yUsDb1cbnJE8bh0zA',
     callbackURL: 'http://robosales.herokuapp.com/auth/google/callback'
   },
   emailFrom: 'SENDER EMAIL ADDRESS', // sender address like ABC <abc@example.com>

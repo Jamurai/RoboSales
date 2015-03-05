@@ -43,6 +43,7 @@ prospects.register(function(app, auth, database) {
 
 
   prospects.aggregateAsset('css', 'prospects.css');
+  prospects.aggregateAsset('css','ui-grid.css');
   prospects.angularDependencies(['angularFileUpload','ngSanitize','ui.select']);
 
   return prospects;

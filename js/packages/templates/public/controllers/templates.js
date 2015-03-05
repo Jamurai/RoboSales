@@ -33,7 +33,10 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
         $scope.gridOptions = {
           enableSorting: true,
           data: 'templates',
-          columnDefs: $scope.columns
+          columnDefs: $scope.columns,
+          rowHeight:50,
+          enableHorizontalScrollbar:0,
+          enableVerticalScrollbar:0
 
         };
 
@@ -119,7 +122,13 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
         }
       };
 
-
+       $scope.getTableHeight = function() {
+         var rowHeight = 50; // your row height
+         var headerHeight = 25; // your header height
+         return {
+            height: ($scope.templates.length * rowHeight + headerHeight) + "px"
+         };
+      };
 
     }
 ]);

@@ -20,7 +20,11 @@ angular.module('mean.prospects').controller('ImportController', ['$scope', '$upl
     ];
     $scope.gridOptions = {
       data: 'imported',
-      columnDefs: $scope.columns
+      columnDefs: $scope.columns,
+      rowHeight:50,
+      enableHorizontalScrollbar:0,
+      enableVerticalScrollbar:0
+
 
     };
 
@@ -32,7 +36,7 @@ angular.module('mean.prospects').controller('ImportController', ['$scope', '$upl
 
 
     $scope.readFile = function(files) {
-
+      ImportFields.setFiles(files);
       if (files && files.length) {
         for (var i = 0; i < files.length; i++) {
           var file = files[i];
@@ -40,7 +44,11 @@ angular.module('mean.prospects').controller('ImportController', ['$scope', '$upl
           reader.onload = function(progressEvent){
             // Entire file
                       // By lines
+                      console.log(this.result);
+            this.result = this.result.replace(/\r/g, '\n');
+
             var lines = this.result.split('\n');
+
             if(lines && lines.length > 1) {
               var result = {
                 'header':lines[0] || '',
@@ -53,52 +61,33 @@ angular.module('mean.prospects').controller('ImportController', ['$scope', '$upl
 
 
             } else {
-              alert("Invalid File");
+              alert("Invalid File - Number of Lines are less than 1");
             }
             /*
             for(var line = 0; line < lines.length; line++){
               console.log(lines[line]);
             }*/
           };
-          reader.readAsText(file);
+          reader.readAsBinaryString(file);
         }
       }
 
     };
 
-    $scope.upload = function (files) {
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                console.log(file);
-                $upload.upload({
-                    url: '/prospects/upload',
-                    file: file
-                }).progress(function (evt) {
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ' +
-                                evt.config.file.name);
-                }).success(function (data, status, headers, config) {
-                    console.log('file ' + config.file.name + 'uploaded. Response: ' +
-                                JSON.stringify(data));
-                    $scope.imported = data;
-                    $scope.status=' uploaded successfully';
 
-
-                }).error(function (data, status, headers, config){
-                  console.log('data-',data,'status-',status);
-                    $scope.status = ' upload failed.'
-                });
-            }
-        }
-    };
 
     $scope.find = function() {
       ImportHistory.query(function(imported) {
         $scope.imported = imported;
       });
     };
-
+    $scope.getTableHeight = function() {
+      var rowHeight = 50; // your row height
+      var headerHeight = 25; // your header height
+      return {
+         height: ($scope.imported.length * rowHeight + headerHeight) + "px"
+      };
+   };
 
 
   }

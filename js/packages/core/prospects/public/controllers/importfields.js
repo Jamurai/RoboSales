@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.prospects').controller('ImportFieldController', ['$scope', '$upload','$stateParams', '$location', 'Global', 'Prospects', 'ImportFields',
-  function($scope, $upload, $stateParams, $location,Global, Prospects, ImportFields) {
+angular.module('mean.prospects').controller('ImportFieldController', ['$scope', '$upload','$state','$stateParams', '$location', 'Global', 'Prospects', 'ImportFields',
+  function($scope, $upload, $state, $stateParams, $location,Global, Prospects, ImportFields) {
     $scope.global = Global;
 
     $scope.imported=[];
@@ -13,13 +13,15 @@ angular.module('mean.prospects').controller('ImportFieldController', ['$scope', 
     };
 
     $scope.field = [];
-    
+
     var result = ImportFields.getFields();
+    var files = ImportFields.getFiles();
     $scope.resultitems=[];
+    var headers;
     try {
 
       console.log(result);
-      var headers = result.header.split(',');
+      headers = result.header.split(',');
       var datas = result.sample.split(',');
       for(var i=0;i< headers.length;i++) {
         $scope.resultitems.push({
@@ -30,18 +32,26 @@ angular.module('mean.prospects').controller('ImportFieldController', ['$scope', 
       }
     } catch (err) {
       console.log(err);
-      alert("Invalid File Contents");
+      alert("Invalid File Contents" + err);
     }
 
 
-    $scope.upload = function (files) {
+    $scope.upload = function () {
+        $scope.loader = true;
+        var remap = {};
+        for (var i = 0; i < $scope.field.length; i++){
+          if($scope.field[i]) {
+              remap[headers[i]] = $scope.field[i];
+          }
+        }
         if (files && files.length) {
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 console.log(file);
                 $upload.upload({
                     url: '/prospects/upload',
-                    file: file
+                    file: file,
+                    fields: {'remap': remap},
                 }).progress(function (evt) {
                     var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
                     console.log('progress: ' + progressPercentage + '% ' +
@@ -51,19 +61,19 @@ angular.module('mean.prospects').controller('ImportFieldController', ['$scope', 
                                 JSON.stringify(data));
                     $scope.imported = data;
                     $scope.status=' uploaded successfully';
+                    $scope.loader=false;
+                    $state.go('import');
 
 
                 }).error(function (data, status, headers, config){
                   console.log('data-',data,'status-',status);
                     $scope.status = ' upload failed.'
+                    $scope.loader=false;
+                    $state.go('import');
                 });
             }
         }
     };
-
-    $scope.set = function(field) {
-      console.log(field);
-    }
 
   }
 ]);

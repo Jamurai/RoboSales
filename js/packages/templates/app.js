@@ -58,7 +58,7 @@ Templates.register(function(app, auth, database) {
     });
     */
     Templates.aggregateAsset('css', 'templates.css');
-    Templates.angularDependencies(['ui.grid','ui.grid.resizeColumns','ui.grid.moveColumns']);
+    Templates.angularDependencies(['ui.grid','ui.grid.resizeColumns','ui.grid.moveColumns','ui.grid.autoResize']);
 
     return Templates;
 });

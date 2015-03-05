@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$upload','$stateParams', '$location', 'Global', 'Prospects','Campaign',
-  function($scope, $upload, $stateParams, $location,Global, Prospects, Campaign) {
+angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$upload','$state','$stateParams', '$location', 'Global', 'Prospects','Campaign',
+  function($scope, $upload, $state, $stateParams, $location,Global, Prospects, Campaign) {
     $scope.global = Global;
 
     $scope.prospectsdata=[];
@@ -17,6 +17,13 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
 
     $scope.headerTemplate = '<span class="gridheader"><input type="checkbox" aria-label="..."></span>';
 
+    $scope.actionEditTemplate ='<span>' +
+    /*
+              '<a href="/#!/contacts/{{row.entity._id}}/edit" class="btn">' +
+              '<i class="glyphicon glyphicon-edit"></i> </a>' +*/
+              '<a href="" class="btn" data-ng-click="grid.appScope.remove(row.entity)">' +
+              '<i class="glyphicon glyphicon-trash"></i></a>' +
+              '</span>';
 
     $scope.columns = [
             {field: 'action', displayName: '', width:10,cellTemplate: $scope.actionTemplate,headerCellTemplate:$scope.headerTemplate},
@@ -25,47 +32,22 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
             {field: 'title', displayName: 'Title'},
             {field: 'company', displayName: 'Company'},
             {field: 'email', displayName: 'Email'},
-            {field: 'phone', displayName: 'Phone'}
+            {field: 'phone', displayName: 'Phone'},
+            {field: 'actions', displayName: 'Actions',
+                        cellTemplate: $scope.actionEditTemplate}
 
     ];
     $scope.gridOptions = {
       enableSorting: true,
       data: 'prospects',
-      columnDefs: $scope.columns
+      columnDefs: $scope.columns,
+      rowHeight:50,
+      enableHorizontalScrollbar:0,
+      enableVerticalScrollbar:0
 
     };
 
 
-    $scope.$watch('files', function () {
-        $scope.upload($scope.files);
-    });
-
-    $scope.upload = function (files) {
-        if (files && files.length) {
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                console.log(file);
-                $upload.upload({
-                    url: '/prospects/upload',
-                    file: file
-                }).progress(function (evt) {
-                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                    console.log('progress: ' + progressPercentage + '% ' +
-                                evt.config.file.name);
-                }).success(function (data, status, headers, config) {
-                    console.log('file ' + config.file.name + 'uploaded. Response: ' +
-                                JSON.stringify(data));
-                    $scope.prospectsdata = data;
-                    $scope.status=' uploaded successfully';
-
-
-                }).error(function (data, status, headers, config){
-                  console.log('data-',data,'status-',status);
-                    $scope.status = ' upload failed.'
-                });
-            }
-        }
-    };
 
     $scope.find = function() {
       Prospects.query(function(prospects) {
@@ -142,5 +124,13 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
         $scope.campaignresults = err.data.error;
       });
     }
+
+    $scope.getTableHeight = function() {
+      var rowHeight = 50; // your row height
+      var headerHeight = 25; // your header height
+      return {
+         height: ($scope.prospects.length * rowHeight + headerHeight) + "px"
+      };
+   };
   }
 ]);

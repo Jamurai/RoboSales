@@ -3,6 +3,6 @@
  <a ui-sref="createtemplate">	<button class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Add a Template</button></a>
 
 
- <div class="gridStyle" ui-grid="gridOptions" ></div>
+ <div ui-if="templates.length>0" class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="getTableHeight()"></div>
 
 </div>
