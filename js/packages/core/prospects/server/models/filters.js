@@ -18,10 +18,7 @@ var FilterSchema = new Schema({
     required: true,
     trim: true
   },
-  filterset: {
-    type: String,
-    trim: true
-  },
+  filterset: [],
   user: {
     type: Schema.ObjectId,
     ref: 'User'

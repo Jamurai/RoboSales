@@ -16,6 +16,7 @@ var mongoose = require('mongoose');
 
  */
 exports.filter = function(req, res, next, id) {
+  
   Filter.load(id, function(err, filter) {
     if (err) return next(err);
     if (!filter) return next(new Error('Failed to load filter ' + id));
@@ -35,7 +36,7 @@ exports.create = function(req, res) {
     if (err) {
 
       return res.status(500).json({
-        error: 'Cannot save the filter'
+        error: 'Cannot save the filter'+err
       });
     }
     res.json(filter);

@@ -81,6 +81,13 @@ angular.module('mean.prospects').config(['$stateProvider',
         resolve: {
           loggedin: checkLoggedin
         }
+      })
+      .state('editfilter', {
+        url: '/contacts/filters/:filterId/edit',
+        templateUrl: 'prospects/views/editfilters.html',
+        resolve: {
+          loggedin: checkLoggedin
+        }
       });
 
 

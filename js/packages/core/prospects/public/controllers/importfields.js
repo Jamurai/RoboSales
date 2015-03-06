@@ -6,7 +6,7 @@ angular.module('mean.prospects').controller('ImportFieldController', ['$scope', 
 
     $scope.imported=[];
     $scope.status = '';
-    $scope.fields=['first_name','last_name','email'];
+    $scope.fields=['first_name','last_name','email','title','company','phone'];
     $scope.hasAuthorization = function(prospect) {
       if (!prospect || !prospect.user) return false;
       return $scope.global.isAdmin || prospect.user._id === $scope.global.user._id;

@@ -5,7 +5,11 @@ angular.module('mean.prospects').controller('FiltersController', ['$scope','$sta
     $scope.global = Global;
 
     $scope.status = '';
-    $scope.fields = ['1','2','3'];
+    $scope.options = ['1','2','3'];
+    $scope.optionselection = [];
+    $scope.operators = ['equals','not equal to','starts with','contains','does not contain','less than','greater than'];
+    $scope.fields = ['first_name','last_name','email','created'];
+
 
     $scope.find = function() {
       Filters.query(function(filters) {
@@ -21,18 +25,20 @@ angular.module('mean.prospects').controller('FiltersController', ['$scope','$sta
       });
     };
 
+
      $scope.create = function(isValid) {
+       console.log($scope.optionselection);
       if (isValid) {
         var filter = new Filters({
-          name: this.name,
-          filterset: this.filterset
+          name: this.filtername,
+          filterset: $scope.optionselection
 
         });
         filter.$save(function(response) {
-          $location.path('contacts/filters/create');
+          $location.path('contacts');
         });
 
-        this.name = '';
+        this.filtername = '';
         this.filterset = '';
 
       } else {
@@ -47,11 +53,11 @@ angular.module('mean.prospects').controller('FiltersController', ['$scope','$sta
               $scope.filters.splice(i,1);
             }
           }
-          $location.path('contacts/filters/create');
+          $location.path('contacts/');
         });
       } else {
         $scope.filter.$remove(function(response) {
-          $location.path('contacts/filters/create');
+          $location.path('contacts');
         });
       }
     };
@@ -65,7 +71,7 @@ angular.module('mean.prospects').controller('FiltersController', ['$scope','$sta
         filter.updated.push(new Date().getTime());
 
         filter.$update(function() {
-          $location.path('contacts/filters/create');
+          $location.path('contacts');
         });
       } else {
         $scope.submitted = true;

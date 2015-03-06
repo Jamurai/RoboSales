@@ -1,6 +1,6 @@
-<section data-ng-controller="FiltersController" >
+<section data-ng-controller="FiltersController" data-ng-init="findOne()">
 
-<form class="form-horizontal" name="filterForm" role="form"  data-ng-submit="create(filterForm.$valid)">
+<form class="form-horizontal" name="filterForm" role="form"  data-ng-submit="update(filterForm.$valid)">
   <div class="form-group row">
     <div class="col-md-12 col-md-offset-6">
       <button type="submit" class="btn btn-primary">Save</button>
@@ -15,7 +15,7 @@
 
         <label for="filtername" class="col-sm-3 control-label">Filter Name</label>
         <div class="col-sm-9" ng-class="{ 'has-error' : submitted && filterForm.filtername.$invalid }">
-          <input name="filtername" data-ng-model="filtername" type="text" class="form-control"  placeholder="Name" required>
+          <input name="filtername" data-ng-model="filter.name" type="text" class="form-control"  placeholder="Name" required>
           <div ng-show="submitted && filterForm.filtername.$invalid" class="help-block">
             <p ng-show="filterForm.filtername.$error.required">Name is required</p>
           </div>
@@ -37,17 +37,17 @@
             </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="option in options">
+          <tr ng-repeat="option in filter.filterset">
             <td>
-                <ui-select ng-model="optionselection[$index].field" theme="bootstrap" ng-disabled="disabled" >
+                <ui-select ng-model="option.field" theme="bootstrap" ng-disabled="disabled" >
                 <ui-select-match placeholder="Select Field">{{$select.selected}}</ui-select-match>
                 <ui-select-choices repeat="field in fields">
                 <span ng-bind-html="field"></span>
                 </ui-select-choices>
                 </ui-select>
            </td>
-           <td ng-required='optionselection[$index]'>
-              <ui-select ng-model="optionselection[$index].operator" theme="bootstrap" ng-disabled="disabled">
+           <td ng-required='option.field'>
+              <ui-select ng-model="option.operator" theme="bootstrap" ng-disabled="disabled">
               <ui-select-match placeholder="Select Operator">{{$select.selected}}</ui-select-match>
               <ui-select-choices repeat="operator in operators">
                <span ng-bind-html="operator"></span>
@@ -56,7 +56,7 @@
             </td>
 
             <td>
-              <input name="{{$index}}-value" type="text" ng-model="optionselection[$index].value" class="form-control" id="value" placeholder="value"  ng-required='optionselection[$index]' >
+              <input name="{{$index}}-value" type="text" ng-model="option.value" class="form-control" id="value" placeholder="value"  ng-required='option.field' >
 
             </td>
           </tr>

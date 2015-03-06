@@ -126,7 +126,7 @@ module.exports = function(grunt) {
     grunt.hook.push('uglify', 200);
   } else {
   //  grunt.hook.push('jshint', -200);
-    grunt.hook.push('csslint', 100);
+  //  grunt.hook.push('csslint', 100);
   }
 
   //Default task.

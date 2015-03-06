@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$upload','$state','$stateParams', '$location', 'Global', 'Prospects','Campaign',
-  function($scope, $upload, $state, $stateParams, $location,Global, Prospects, Campaign) {
+angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$upload','$state','$stateParams', '$location', 'Global', 'Prospects','Campaign','Filters',
+  function($scope, $upload, $state, $stateParams, $location,Global, Prospects, Campaign, Filters) {
     $scope.global = Global;
 
     $scope.prospectsdata=[];
@@ -18,9 +18,8 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
     $scope.headerTemplate = '<span class="gridheader"><input type="checkbox" aria-label="..."></span>';
 
     $scope.actionEditTemplate ='<span>' +
-    /*
               '<a href="/#!/contacts/{{row.entity._id}}/edit" class="btn">' +
-              '<i class="glyphicon glyphicon-edit"></i> </a>' +*/
+              '<i class="glyphicon glyphicon-edit"></i> </a>' +
               '<a href="" class="btn" data-ng-click="grid.appScope.remove(row.entity)">' +
               '<i class="glyphicon glyphicon-trash"></i></a>' +
               '</span>';
@@ -50,6 +49,12 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
 
 
     $scope.find = function() {
+      Filters.query(function(filters) {
+        $scope.filters = filters;
+        $scope.filters.selected = filters[0] || '';
+
+      });
+
       Prospects.query(function(prospects) {
         $scope.prospects = prospects;
       });
@@ -57,7 +62,7 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
 
      $scope.findOne = function() {
       Prospects.get({
-        prospectId: $stateParams.prospectId
+        prospectId: $stateParams.contactId
       }, function(prospect) {
         $scope.prospect = prospect;
       });

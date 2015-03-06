@@ -27,6 +27,11 @@ module.exports = function(Prospects, app, auth) {
     .get(filters.all)
     .post(auth.requiresLogin, filters.create);
 
+  app.route('/prospects/filters/:filterId')
+      .get(auth.isMongoId, filters.show)
+      .put(auth.isMongoId, auth.requiresLogin, hasAuthorization, filters.update)
+      .delete(auth.isMongoId, auth.requiresLogin, hasAuthorization, filters.destroy);
+
   app.route('/prospects/history')
     .get(history.all);
 
@@ -39,7 +44,7 @@ module.exports = function(Prospects, app, auth) {
       .delete(auth.isMongoId, auth.requiresLogin, hasAuthorization, prospects.destroy);
 
 
-
+  app.param('filterId',filters.filter);
   app.param('prospectId', prospects.prospect);
 
 

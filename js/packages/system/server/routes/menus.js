@@ -31,14 +31,6 @@ module.exports = function(System, app, auth, database) {
                       "link":"templates",
                       "roles":["authenticated"],
                       "icon":null,"submenus":[]
-                      },
-                      {
-                      "name":"settings",
-                      "title":"Settings",
-                      "link":"settings",
-                      "roles":["authenticated"],
-                      "icon":null,
-                      "submenus":[]
                       }
                       ];
 

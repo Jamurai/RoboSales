@@ -5,6 +5,7 @@ angular.module('mean.templates').controller('TemplatesController', ['$scope', '$
 
 
         $scope.global = Global;
+        $scope.templates = [];
         $scope.package = {
             name: 'templates'
         };

@@ -1,9 +1,25 @@
 <section data-ng-controller="ProspectsController" data-ng-init="find()">
-
-  <a><button class="btn btn-primary">New Contact</button></a>
-  <a><button class="btn btn-primary">Add to Campaign</button></a>
+  <div class="row">
+    <div class="col-md-12">
+      <a><button class="btn btn-primary" ng-disabled=true>New Contact</button></a>
+      <a><button class="btn btn-primary" ng-disabled=true>Add to Campaign</button></a>
+    </div>
+  </div>
   <!--<a href="/#!/contacts/filters/create"><button class="btn btn-primary">Add Filters</button></a>-->
-
+  <div class=" content row">
+      <div class="col-md-3">
+          <ui-select ng-model="filters.selected" theme="bootstrap" ng-disabled="disabled" >
+           <ui-select-match placeholder="Select Filter">{{$select.selected.name}}</ui-select-match>
+           <ui-select-choices repeat="filter in filters">
+             <span ng-bind-html="filter.name"></span>
+           </ui-select-choices>
+          </ui-select>
+      </div>
+      <div class="col-md-3">
+          <a href="/#!/contacts/filters/{{filters.selected._id}}/edit">Edit |</a>
+          <a href="/#!/contacts/filters/create"> Create </a>
+      </div>
+  </div>
   <div  class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="getTableHeight()"></div>
 
 </section>

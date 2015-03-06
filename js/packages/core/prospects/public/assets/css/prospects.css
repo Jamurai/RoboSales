@@ -22,3 +22,10 @@ width: auto;
 .selectize-control > .selectize-dropdown {
     top: 36px;
 }
+
+.small-box {
+	margin-top:2%;
+}
+.medium-box {
+	margin-top:5%;
+}
