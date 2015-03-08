@@ -20,7 +20,6 @@ var mongoose = require('mongoose-q')(require('mongoose'));
   Campaign = require('./Campaign');
 
 
-
 /**
  * Find prospect by id
 
@@ -275,11 +274,113 @@ exports.show = function(req, res) {
   res.json(req.prospect);
 };
 
+var constructQuery = function(query,filterset){
+  //$where : 'this.favouriteFoods.indexOf("sushi") != -1'
+  //'equals','not equal to','starts with','contains','does not contain','less than','greater than'
+
+
+  var operatorMap = {
+    'equals':'$in',
+    'not equal to': '$nin',
+    'starts with':['$where','== 0'],
+    'contains':['$where','!= -1'],
+    'does not contain':['$where','== -1'],
+    'less than':'$lt',
+    'greater than':'$gt'
+  }
+
+  /*
+  var filtersetObj =[];
+  try {
+     var parsedObj = JSON.parse(filterset);
+
+     console.log(typeof parsedObj,parsedObj);
+     if(typeof parsedObj == 'object') {
+       filtersetObj.push(parsedObj);
+     }
+  } catch(err) {
+    console.log(err);
+
+  }
+  */
+
+
+  //var subquery = '$and:[ {' +   ;
+
+  //console.log(TAG,"FilterSet",filtersetObj);
+
+  if(filterset && filterset.length > 0) {
+      query['$and'] = [];
+
+    _.each(filterset, function(filter){
+        var fieldname = filter['field'];
+        var operator = operatorMap[filter['operator']];
+        var value = filter['value'];
+        var filterObj = {};
+        if((typeof operator == "string") && (operator == '$in' || operator == '$nin')) {
+          filterObj[fieldname]= {};
+          var values=[];
+          values.push(value);
+          filterObj[fieldname][operator]=values
+        } else if((typeof operator == "string") && (operator == '$lt' || operator == '$gt'))  {
+          filterObj[fieldname]= {};
+          filterObj[fieldname][operator]=value
+
+
+        } else if((typeof operator == "object") && operator[0] == "$where") {
+            filterObj[operator[0]] = 'this.' + fieldname +'.indexOf("'+value+'")' + operator[1];
+        }
+
+
+
+        //filterObj[fieldname]['$not']ex']= value;
+        //filterObj[fieldname][operator]=value;
+
+        query['$and'].push(filterObj);
+
+
+
+      //var squery = '{' + filter['field'] + ':{' + operatorMap[filter['operator']] + ':' + filter['value'] + '}}';
+      //subquery = subquery + ',' + squery;
+
+
+    });
+
+  }
+
+  console.log(TAG,JSON.stringify(query));
+
+  return query;
+
+}
 /**
  * List of prospects
  */
+exports.search = function(req, res) {
+
+  var query = {'user':req.user._id};
+  console.log(TAG,req.body);
+
+  if(req.body && req.body.filterset){
+    query = constructQuery(query,req.body.filterset)
+  }
+  Prospect.find(query).sort('-created').populate('user', 'firstname lastname').exec(function(err, prospects) {
+    if (err) {
+      return res.status(500).json({
+        error: 'Cannot list the prospects' + err
+      });
+    }
+    res.json(prospects);
+
+  });
+};
+
+
 exports.all = function(req, res) {
-  Prospect.find({'user':req.user._id}).sort('-created').populate('user', 'firstname lastname').exec(function(err, prospects) {
+
+  var query = {'user':req.user._id};
+
+  Prospect.find(query).sort('-created').populate('user', 'firstname lastname').exec(function(err, prospects) {
     if (err) {
       return res.status(500).json({
         error: 'Cannot list the prospects'
@@ -289,7 +390,6 @@ exports.all = function(req, res) {
 
   });
 };
-
 exports.runcampaign = function(req,res) {
 
   //var prospectPromise = Prospect.find({}).exec();

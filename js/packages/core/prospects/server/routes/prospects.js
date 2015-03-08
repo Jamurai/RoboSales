@@ -35,6 +35,9 @@ module.exports = function(Prospects, app, auth) {
   app.route('/prospects/history')
     .get(history.all);
 
+  app.route('/prospects/search')
+      .post(prospects.search);
+
   app.route('/prospects/runcampaign')
         .post(auth.requiresLogin,hasAuthorization, prospects.runcampaign);
 

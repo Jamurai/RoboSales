@@ -17,7 +17,8 @@
       </div>
       <div class="col-md-3">
           <a href="/#!/contacts/filters/{{filters.selected._id}}/edit">Edit |</a>
-          <a href="/#!/contacts/filters/create"> Create </a>
+          <a href="/#!/contacts/filters/create"> Create |</a>
+          <a href="" data-ng-click="removeFilter(filters.selected);"> Delete </a>
       </div>
   </div>
   <div  class="gridStyle" ui-grid="gridOptions" ui-grid-auto-resize ng-style="getTableHeight()"></div>

@@ -9,6 +9,11 @@ angular.module('mean.prospects').factory('Prospects', ['$resource',
     }, {
       update: {
         method: 'PUT'
+      },
+      search: {
+        method: 'POST',
+        url: '/prospects/search',
+        isArray:true
       }
 
     });

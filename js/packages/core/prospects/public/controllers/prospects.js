@@ -3,9 +3,10 @@
 angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$upload','$state','$stateParams', '$location', 'Global', 'Prospects','Campaign','Filters',
   function($scope, $upload, $state, $stateParams, $location,Global, Prospects, Campaign, Filters) {
     $scope.global = Global;
-
+    $scope.filters = [];
     $scope.prospectsdata=[];
     $scope.status = '';
+    $scope.prospects = [];
     $scope.hasAuthorization = function(prospect) {
       if (!prospect || !prospect.user) return false;
       return $scope.global.isAdmin || prospect.user._id === $scope.global.user._id;
@@ -52,12 +53,13 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
       Filters.query(function(filters) {
         $scope.filters = filters;
         $scope.filters.selected = filters[0] || '';
+      /*  Prospects.query({filterset:$scope.filters.selected.filterset},function(prospects) {
+          $scope.prospects = prospects;
+        });*/
 
       });
 
-      Prospects.query(function(prospects) {
-        $scope.prospects = prospects;
-      });
+
     };
 
      $scope.findOne = function() {
@@ -104,6 +106,20 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
       }
     };
 
+    $scope.removeFilter = function(filter) {
+      if (filter) {
+        filter.$remove(function(response) {
+          for (var i in $scope.filters) {
+            if ($scope.filters[i] === filter) {
+              $scope.filters.splice(i,1);
+              $scope.filters.selected = $scope.filters[0] || '';
+            }
+          }
+
+        });
+      }
+    };
+
     $scope.update = function(isValid) {
       if (isValid) {
         var prospect = $scope.prospect;
@@ -137,5 +153,15 @@ angular.module('mean.prospects').controller('ProspectsController', ['$scope', '$
          height: ($scope.prospects.length * rowHeight + headerHeight) + "px"
       };
    };
-  }
+
+   $scope.$watch('filters.selected',function (newval,oldval) {
+       //$scope.upload($scope.files);
+       console.log('NewVal:',newval,'Oldval:',oldval);
+       if(newval && newval._id != (oldval?oldval._id:'undefined')) {
+         Prospects.search({filterset:newval.filterset},function(prospects) {
+           $scope.prospects = prospects;
+         });
+       }
+  });
+}
 ]);
